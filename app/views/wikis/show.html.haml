@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @wiki.title
+%p
+  %b Page:
+  = @wiki.page
+
+= link_to 'Edit', edit_wiki_path(@wiki)
+\|
+= link_to 'Back', wikis_path
