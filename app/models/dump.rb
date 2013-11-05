@@ -17,18 +17,18 @@ class Dump
   end
 
   def downloaded?
-    File.exits(@filename)
+    File.exists?(@filename)
   end
 
-  def each_record!(&block)
+  def each_record!(update_proc, &block)
     unless self.downloaded?
       self.download
     end
-    parse(&block)
+    self.each_record(update_proc, &block)
   end
 
-  def each_record(&block)
-    raise "Dump does not exits, Download it first" unless self.downloaded?
+  def each_record(update_proc, &block)
+    raise "Dump does not exist, Download it first" unless self.downloaded?
 
     f = File.open(@filename)
 
@@ -38,10 +38,21 @@ class Dump
 
     begin
       line = line.match(/\(.*\)[,;]/)[0]  # ignore begining of line until (...) object
+
+      start = Time.now
+      last = start
+      update_proc_limit = 2 # call update proc every two seconds
+      num_processed = 0
       begin
         yield line[1..-3].split(',').map { |e| e.match(/^['"].*['"]$/) ?  e[1..-2] : e.to_f }
+        num_processed += 1
         line = f.gets.chomp
+        if (Time.now - last) > update_proc_limit
+          last = Time.now
+          update_proc.call num_processed, (last - start)
+        end
       end while(line[0] == '(')          # until next insert block, or end of file
+
     end while  line.match(/^INSERT INTO/) # Until line doesn't start with (...
 
     f.close

@@ -23,7 +23,8 @@ ActiveRecord::Schema.define(version: 20131104193704) do
 
   create_table "pages", force: true do |t|
     t.string  "title"
-    t.integer "page_id"
+    t.integer "page_ident"
+    t.integer "namespace"
     t.integer "wiki_id"
   end
 
