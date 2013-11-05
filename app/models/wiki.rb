@@ -1,6 +1,6 @@
 def update_proc(name)
   Proc.new do |n, run_time|
-    print "Created #{n} #{name} in %.2f seconds. %.2f r/s \r" % [run_time, n / run_time]
+    print "Created #{n} #{name} in %.2f seconds. %.2f r/s             \r" % [run_time, n / run_time]
   end
 end
 

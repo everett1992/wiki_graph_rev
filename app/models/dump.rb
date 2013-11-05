@@ -39,7 +39,7 @@ class Dump
 
     start = Time.now
     last = start
-    update_proc_limit = 10 # call update proc every two seconds
+    update_proc_limit = 2 # call update proc every two seconds
     num_processed = 0
 
     # For each insert block
