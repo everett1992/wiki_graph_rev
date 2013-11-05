@@ -1,12 +1,12 @@
 %p#notice= notice
 
-%p
-  %b Title:
-  = @wiki.title
-%p
-  %b Page:
-  = @wiki.page
+%h3= @wiki.title
+%p #{@wiki.pages.count} pages
 
-= link_to 'Edit', edit_wiki_path(@wiki)
-\|
-= link_to 'Back', wikis_path
+%input.typeahead{placeholder: 'Find Page'}
+
+%p
+  = link_to 'Back', wikis_path
+
+:javascript
+  window.wiki = '#{@wiki.title}'

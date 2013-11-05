@@ -1,8 +1,3 @@
-def update_proc(name)
-  Proc.new do |n, run_time|
-    print "Created #{n} #{name} in %.2f seconds. %.2f r/s             \r" % [run_time, n / run_time]
-  end
-end
 
 class Wiki < ActiveRecord::Base
   has_many :pages
@@ -11,6 +6,10 @@ class Wiki < ActiveRecord::Base
 
   validates_uniqueness_of :title
   validates_presence_of :title
+
+  def to_param
+    title
+  end
 
   def get_pages
     dump = Dump.new(self.title, 'page')
@@ -29,6 +28,14 @@ class Wiki < ActiveRecord::Base
       unless to.nil? || from.nil?
         Link.create(from: from, to: to)
       end
+    end
+  end
+
+  private
+
+  def update_proc(name)
+    Proc.new do |n, run_time|
+      print "Created #{n} #{name} in %.2f seconds. %.2f r/s             \r" % [run_time, n / run_time]
     end
   end
 end
