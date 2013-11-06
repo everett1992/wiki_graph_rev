@@ -2,6 +2,9 @@
 
 %h3= @page.title
 = link_to :random, random_page_wiki_path(@wiki)
+%input#page_title.typeahead{placeholder: 'Find Page'}
+%button#goto_page
+  Go
 
 %p
   %label{name: :auto}
