@@ -1,6 +1,9 @@
 WikiGraphMysql::Application.routes.draw do
 
   resources :wikis, path: '' do
+    member do
+      get 'titles'
+    end
     resources :pages
   end
 

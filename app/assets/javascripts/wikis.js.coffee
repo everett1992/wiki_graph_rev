@@ -10,5 +10,4 @@ $ ->
   wiki = 'zawiki'
   $('.typeahead').typeahead
     name: 'pages',
-    remote: "/#{wiki}/pages?q=%QUERY"
-
+    remote: "/#{wiki}/titles?q=%QUERY"

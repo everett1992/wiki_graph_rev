@@ -1,5 +1,5 @@
 class WikisController < ApplicationController
-  before_action :set_wiki, only: [:show, :edit, :update, :destroy]
+  before_action :set_wiki, only: [:titles, :show, :edit, :update, :destroy]
 
   # GET /wikis
   # GET /wikis.json
@@ -58,6 +58,20 @@ class WikisController < ApplicationController
     respond_to do |format|
       format.html { redirect_to wikis_url }
       format.json { head :no_content }
+    end
+  end
+
+  def titles
+    query = params[:q]
+    if query
+      @titles = @wiki.pages.where("title LIKE :prefix", prefix: "#{query}%").pluck(:title)
+    else
+      @titles = @wiki.pages.pluck(:title)
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @titles }
     end
   end
 
