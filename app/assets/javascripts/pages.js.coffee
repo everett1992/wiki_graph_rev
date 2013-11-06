@@ -4,21 +4,34 @@
 
 $ ->
   window.Graph = (element, root)->
+    @gen = 0
     @g3 = jsnx.Graph()
     @queue = []
 
-    @link_pages = (from_id, to_id) ->
-      if @g3.nodes().indexOf(to_id) == -1
-        @queue.push to_id
-        @g3.add_nodes_from [to_id]
+    @link_pages = (links) ->
+      nodes = []
+      edges = []
+      for link in links
+        if @g3.nodes().indexOf(String(link.to_id)) == -1
+          @queue.push link.to_id
+          nodes.push link.to_id
+        else
+          console.log "exits"
 
-      @g3.add_edges_from [[from_id, to_id]]
+        edges.push [link.from_id, link.to_id]
+
+      if nodes.length > 0
+        @g3.add_nodes_from nodes, group: @gen
+      if edges.length > 0
+        @g3.add_edges_from edges
 
     @next = =>
-      page_id = @queue.shift()
-      $.getJSON "/links/from/#{page_id}", (links) =>
-        for link in links
-          @link_pages(link.from_id, link.to_id)
+      @gen += 1
+      prev = @queue
+      @queue = []
+      for page_id in prev
+        $.getJSON "/links/from/#{page_id}", (links) =>
+          @link_pages(links)
 
     # Add root node
     @queue.push root
@@ -29,7 +42,7 @@ $ ->
       element: element,
       layout_attr:
         charge: -120,
-        linkDistance: 300
+        linkDistance: 20
       node_attr:
         r: 5,
         title: (d) -> d.data.title
@@ -42,4 +55,3 @@ $ ->
     , true)
     this
 
-  window.graph = new Graph('#graph', root_node)

@@ -2,7 +2,13 @@
 
 %h3= @page.title
 
+= button_to_function :next, 'graph.next()'
+
 #graph
 
 :javascript
-  window.root_node = '#{@page.id}'
+  $(function() {
+    window.root_node = '#{@page.id}'
+    window.graph = new Graph('#graph', root_node)
+    window.graph.next()
+  })
