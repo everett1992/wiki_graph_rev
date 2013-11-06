@@ -6,6 +6,9 @@ page_suggestions = (query, process)->
   console.log(query)
 
 $ ->
+  $('#goto_page').on 'click', ->
+    page_title = $('#page_title').val()
+    window.location = "/#{wiki}/pages/#{page_title}"
 
   wiki = 'zawiki'
   $('.typeahead').typeahead

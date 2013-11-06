@@ -1,9 +1,8 @@
 %p#notice= notice
 
-%p
-  %b Title:
-  = @page.title
+%h3= @page.title
 
-= link_to 'Edit', edit_page_path(@page)
-\|
-= link_to 'Back', pages_path
+#graph
+
+:javascript
+  window.root_node = '#{@page.id}'

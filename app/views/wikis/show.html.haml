@@ -3,7 +3,9 @@
 %h3= @wiki.title
 %p #{@wiki.pages.count} pages
 
-%input.typeahead{placeholder: 'Find Page'}
+%input#page_title.typeahead{placeholder: 'Find Page'}
+%button#goto_page
+  Go
 
 %p
   = link_to 'Back', wikis_path

@@ -17,6 +17,10 @@ class Page < ActiveRecord::Base
 
   validates_presence_of :wiki
 
+  def to_params
+    title
+  end
+
   def create_link_to(page)
     self.links.create(to: page)
   end

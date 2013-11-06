@@ -4,7 +4,11 @@ WikiGraphMysql::Application.routes.draw do
     member do
       get 'titles'
     end
-    resources :pages
+    resources :pages, only: :show
+  end
+
+  namespace :links do
+    get 'from/:from_id', action: :from
   end
 
   root 'wikis#index'
