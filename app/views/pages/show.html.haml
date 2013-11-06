@@ -1,14 +1,29 @@
 %p#notice= notice
 
 %h3= @page.title
+= link_to :random, random_page_wiki_path(@wiki)
 
-= button_to_function :next, 'graph.next()'
+%p
+  %label{name: :auto}
+    Manual
+  %input{name: :auto, type: :radio, value: ""}
+  = button_to_function :step, 'graph.next()'
+
+  %br
+
+  %label{name: :auto}
+    Auto
+  %input{name: :auto, type: :radio, value: "on", checked: :checked}
+
+  %label{name: :interval}
+    Delay
+  %input{name: :interval, type: :range, value: 1000, max: 1000, min: 1, step: 1}
 
 #graph
 
 :javascript
   $(function() {
-    window.root_node = '#{@page.id}'
-    window.graph = new Graph('#graph', root_node)
-    window.graph.next()
+    root_node = '#{@page.id}'
+    window.init(root_node)
+    window.update()
   })

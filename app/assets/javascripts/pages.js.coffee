@@ -3,6 +3,20 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
+
+  window.init = (root_node)->
+    window.graph = new Graph('#graph', root_node)
+    window.graph.next()
+
+  window.update = ->
+    enabled = $('input[name=auto]:checked').val() == "on"
+
+    if enabled
+      window.graph.next()
+
+    interval = $('input[name=interval]').val()
+    setTimeout(window.update, interval)
+
   window.Graph = (element, root)->
     @gen = 0
     @g3 = jsnx.Graph()

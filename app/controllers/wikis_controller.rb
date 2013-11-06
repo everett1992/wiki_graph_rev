@@ -1,5 +1,5 @@
 class WikisController < ApplicationController
-  before_action :set_wiki, only: [:titles, :show, :edit, :update, :destroy]
+  before_action :set_wiki, only: [:random_page, :titles, :show, :edit, :update, :destroy]
 
   # GET /wikis
   # GET /wikis.json
@@ -73,6 +73,14 @@ class WikisController < ApplicationController
       format.html
       format.json { render json: @titles }
     end
+  end
+
+  def random_page
+    c = @wiki.pages.count
+    @page = @wiki.pages.find(:first, offset: rand(c))
+
+    redirect_to [@wiki, @page]
+
   end
 
   private

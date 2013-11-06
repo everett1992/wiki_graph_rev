@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
-  before_action :set_page, only: [:show, :edit, :update, :destroy]
+  before_action :set_wiki, only: [:show]
+  before_action :set_page, only: [:show]
   # GET /pages/1
   # GET /pages/1.json
   def show
@@ -14,5 +15,9 @@ class PagesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def page_params
       params.require(:page).permit(:title)
+    end
+
+    def set_wiki
+      @wiki = Wiki.find_by_title(params[:wiki_id])
     end
 end
