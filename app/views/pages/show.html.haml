@@ -5,6 +5,12 @@
 
 %p
   %label{name: :auto}
+    Reset
+  = button_to_function :reset, 'window.init()'
+
+  %br
+
+  %label{name: :auto}
     Manual
   %input{name: :auto, type: :radio, value: ""}
   = button_to_function :step, 'graph.next()'

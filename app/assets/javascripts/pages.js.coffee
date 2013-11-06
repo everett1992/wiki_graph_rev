@@ -5,8 +5,10 @@
 $ ->
 
   window.init = (root_node)->
-    window.graph = new Graph('#graph', root_node)
+    window.root_node ||= root_node
+    window.graph = new Graph('#graph', window.root_node)
     window.graph.next()
+
 
   window.update = ->
     enabled = $('input[name=auto]:checked').val() == "on"
