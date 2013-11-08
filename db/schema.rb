@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 20131104193704) do
     t.integer "from_id"
   end
 
-  add_index "links", ["from_id"], name: "index_links_on_from_id"
-  add_index "links", ["to_id"], name: "index_links_on_to_id"
+  add_index "links", ["from_id"], name: "index_links_on_from_id", using: :btree
+  add_index "links", ["to_id"], name: "index_links_on_to_id", using: :btree
 
   create_table "pages", force: true do |t|
     t.string  "title"
