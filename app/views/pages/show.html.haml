@@ -37,6 +37,7 @@
       %br
 
       = button_to_function "Add Random", "window.graph.add_random()"
+      %input{name: :auto_add, type: :checkbox, value: "on", default: :false}
 
 .span9
   #show_page

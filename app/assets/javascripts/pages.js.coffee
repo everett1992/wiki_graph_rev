@@ -58,6 +58,10 @@ $ ->
       @gen += 1
       prev = @queue
       @queue = []
+
+      if  $('input[name=auto_add]:checked').val() == "on" && prev.length == 0
+        @add_random()
+
       for page_id in prev
         $.getJSON "/links/from/#{page_id}", (links) =>
           @link_pages(links)
