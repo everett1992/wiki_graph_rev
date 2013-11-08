@@ -3,6 +3,9 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
+  window.show_page = (page_id) ->
+    $.getJSON "/pages/#{page_id}/info", (page) =>
+      $('#show_page').html(HandlebarsTemplates['show_page'](page))
 
   window.init = (root_node)->
     window.root_node ||= root_node
@@ -27,6 +30,7 @@ $ ->
     @link_pages = (links) ->
       nodes = []
       edges = []
+
       for link in links
         if @g3.nodes().indexOf(String(link.to_id)) == -1
           @queue.push link.to_id
@@ -40,6 +44,10 @@ $ ->
         @g3.add_nodes_from nodes, group: @gen
       if edges.length > 0
         @g3.add_edges_from edges
+
+      d3.selectAll('g.node').on 'click', (d, e) ->
+        console.log d
+        show_page d.node
 
     @next = =>
       @gen += 1
@@ -61,8 +69,7 @@ $ ->
         linkDistance: 20
       node_attr:
         r: 5,
-        title: (d) -> d.data.title
-        label: (d) -> d.data.title
+        page_id: (d) -> d.node
       node_style:
         fill: (d) -> color(d.data.group)
         stroke: 'none'
