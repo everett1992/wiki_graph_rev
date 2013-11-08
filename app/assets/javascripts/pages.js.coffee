@@ -23,14 +23,21 @@ $ ->
     setTimeout(window.update, interval)
 
   window.Graph = (element, root)->
+    @ids = window.page_ids
     @gen = 0
     @g3 = jsnx.Graph()
     @queue = []
 
     @add_random = ->
-      $.getJSON "/#{window.wiki}/random_page", (page) =>
-        @queue.push page.id
-        @g3.add_nodes_from [page.id]
+      rand_id = Math.floor(Math.random() * @ids.length)
+      page_id = @ids[rand_id]
+
+      @add page_id
+      @g3.add_nodes_from [page_id]
+
+    @add = (page_id) ->
+      @ids.splice(@ids.indexOf(String(page_id)), 1)
+      @queue.push page_id
 
     @link_pages = (links) ->
       nodes = []
@@ -38,7 +45,7 @@ $ ->
 
       for link in links
         if @g3.nodes().indexOf(String(link.to_id)) == -1
-          @queue.push link.to_id
+          @add link.to_id
           nodes.push link.to_id
         else
           console.log "exits"
@@ -67,7 +74,7 @@ $ ->
           @link_pages(links)
 
     # Add root node
-    @queue.push root
+    @add root
     @g3.add_nodes_from [root]
 
     color = d3.scale.category20()

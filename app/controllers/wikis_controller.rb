@@ -83,11 +83,7 @@ class WikisController < ApplicationController
     end while @page.links.count < 1
 
 
-    respond_to do |format|
-      format.html { redirect_to [@wiki, @page] }
-      format.json { render json: @page }
-    end
-
+    format.html { redirect_to [@wiki, @page] }
   end
 
   private

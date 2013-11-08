@@ -6,7 +6,7 @@
   -else
     %h3 Page not found
 
-  = link_to :random, random_page_wiki_path(@wiki)
+  = link_to :random, random_page_wiki_path(@wiki), links: true
   %input#page_title.typeahead{placeholder: 'Find Page'}
   %button#goto_page
     Go
@@ -48,7 +48,8 @@
 
 :javascript
   $(function() {
-    window.wiki = '#{@page.wiki.title}'
+    window.wiki = '#{@wiki.title}'
+    window.page_ids = #{@ids}
     root_node = '#{@page.id}'
     window.init(root_node)
     window.update()
