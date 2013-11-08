@@ -18,11 +18,11 @@ gem 'coffee-rails', '~> 4.0.0'
 # Use Haml for .html.haml
 gem 'haml-rails'
 
+gem 'handlebars_assets'
+
 gem 'anjlab-bootstrap-rails', require: 'bootstrap-rails'
 gem 'bootstrap-glyphicons'
 gem 'bootstrap-typeahead-rails'
-
-gem 'gon'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby

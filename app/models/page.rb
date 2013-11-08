@@ -21,6 +21,10 @@ class Page < ActiveRecord::Base
     self.title
   end
 
+  def wiki_url
+    return "https://#{wiki.short_title}.wikipedia.org/wiki/#{title}"
+  end
+
   def create_link_to(page)
     self.links.create(to: page)
   end

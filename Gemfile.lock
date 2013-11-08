@@ -45,9 +45,6 @@ GEM
     coffee-script-source (1.6.3)
     erubis (2.7.0)
     execjs (2.0.2)
-    gon (4.1.1)
-      actionpack (>= 2.3.0)
-      json
     haml (4.0.3)
       tilt
     haml-rails (0.4)
@@ -55,6 +52,10 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
+    handlebars_assets (0.14.1)
+      execjs (>= 1.2.9)
+      sprockets (>= 2.0.3)
+      tilt
     hike (1.2.3)
     i18n (0.6.5)
     jbuilder (1.5.2)
@@ -130,8 +131,8 @@ DEPENDENCIES
   bootstrap-glyphicons
   bootstrap-typeahead-rails
   coffee-rails (~> 4.0.0)
-  gon
   haml-rails
+  handlebars_assets
   jbuilder (~> 1.2)
   jquery-rails
   rails (= 4.0.0)

@@ -31,6 +31,10 @@ class Wiki < ActiveRecord::Base
     end
   end
 
+  def short_title
+    return title.match(/.*(?=wiki)/).to_s
+  end
+
   private
 
   def update_proc(name)

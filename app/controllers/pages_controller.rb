@@ -1,9 +1,15 @@
 class PagesController < ApplicationController
   before_action :set_wiki, only: [:show]
   before_action :set_page, only: [:show]
+
+  respond_to :json, :html
   # GET /pages/1
   # GET /pages/1.json
   def show
+  end
+
+  def info
+    @page = Page.find_by_id(params[:id])
   end
 
   private

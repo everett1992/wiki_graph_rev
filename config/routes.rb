@@ -8,6 +8,12 @@ WikiGraphMysql::Application.routes.draw do
     resources :pages, only: :show
   end
 
+  resources :pages, only: [] do
+    member do
+      get 'info'
+    end
+  end
+
   namespace :links do
     get 'from/:from_id', action: :from
   end
