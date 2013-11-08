@@ -39,19 +39,19 @@
       = button_to_function "Add Random", "window.graph.add_random()"
       %input{name: :auto_add, type: :checkbox, value: "on", default: :false}
 
-.span9
-  #show_page
+  .span9
+    #show_page
 
-  #show_page
+    #show_page
 
-  #graph
+    #graph
 
-:javascript
-  $(function() {
-    window.wiki = '#{@wiki.title}'
-    window.page_ids = #{@ids}
-    root_node = '#{@page.id}'
-    window.init(root_node)
-    window.update()
-    window.show_page(root_node)
-  })
+  :javascript
+    $(function() {
+      window.wiki = '#{@wiki.title}'
+      window.page_ids = #{@ids}
+      root_node = '#{@page.id}'
+      window.init(root_node)
+      window.update()
+      window.show_page(root_node)
+    })

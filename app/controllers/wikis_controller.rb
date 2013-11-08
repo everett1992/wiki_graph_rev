@@ -82,8 +82,7 @@ class WikisController < ApplicationController
       @page = @wiki.pages.find(:first, offset: rand(c))
     end while @page.links.count < 1
 
-
-    format.html { redirect_to [@wiki, @page] }
+    redirect_to [@wiki, @page]
   end
 
   private
