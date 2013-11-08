@@ -82,7 +82,11 @@ class WikisController < ApplicationController
       @page = @wiki.pages.find(:first, offset: rand(c))
     end while @page.links.count < 1
 
-    redirect_to [@wiki, @page]
+
+    respond_to do |format|
+      format.html { redirect_to [@wiki, @page] }
+      format.json { render json: @page }
+    end
 
   end
 

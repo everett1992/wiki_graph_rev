@@ -27,6 +27,11 @@ $ ->
     @g3 = jsnx.Graph()
     @queue = []
 
+    @add_random = ->
+      $.getJSON "/#{window.wiki}/random_page", (page) =>
+        @queue.push page.id
+        @g3.add_nodes_from [page.id]
+
     @link_pages = (links) ->
       nodes = []
       edges = []
