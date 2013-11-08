@@ -29,11 +29,12 @@ $ ->
     @queue = []
 
     @add_random = ->
-      rand_id = Math.floor(Math.random() * @ids.length)
-      page_id = @ids[rand_id]
+      if @ids.length > 0
+        rand_id = Math.floor(Math.random() * @ids.length)
+        page_id = @ids[rand_id]
 
-      @add page_id
-      @g3.add_nodes_from [page_id]
+        @add page_id
+        @g3.add_nodes_from [page_id]
 
     @add = (page_id) ->
       @ids.splice(@ids.indexOf(String(page_id)), 1)
