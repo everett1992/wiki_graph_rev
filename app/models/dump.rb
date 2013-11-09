@@ -32,23 +32,14 @@ class Dump
 
     f = File.open(@filename)
 
-    begin                               # read file until line starting with INSERT INTO
-      line = f.gets
-    end until line.match(/^INSERT INTO/)
-
-
     start = Time.now
     last = start
     update_proc_limit = 2 # call update proc every two seconds
     num_processed = 0
 
-    # For each insert block
-    begin
-      line = line.match(/\(.*\)[,;]/)[0]  # ignore begining of line until (...) object
-
-      # For each line
-      begin
-        yield line[1..-3].split(',').map { |e| e.match(/^['"].*['"]$/) ?  e[1..-2] : e.to_f }
+    while line = f.gets
+      if line.match(/(?<=VALUES |^)\((.*\))[,;]/)
+        yield $1.split(',').map { |e| e.match(/^['"].*['"]$/) ?  e[1..-2] : e.to_f }
         num_processed += 1
         line = f.gets.chomp
 
@@ -56,10 +47,8 @@ class Dump
           last = Time.now
           update_proc.call num_processed, (last - start)
         end
-
-      end while(line[0] == '(')          # until next insert block, or end of file
-
-    end while  line.match(/^INSERT INTO/) # Until line doesn't start with (...
+      end
+    end
 
     f.close
   end
