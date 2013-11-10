@@ -34,21 +34,22 @@ class Dump
 
     start = Time.now       # When processing was started
     last = start           # Last time time update was run
-    update_proc_limit = 5  # How long a time chunk is
-    num_processed = 0      # Total number of rows added
-    last_num_processed = 0 # Number of rows added in this time chunk
+    update_proc_limit = 2  # How long between running update proc
+    n = 0      # Total number of rows added
+    d = 0 # Number of rows added in this time chunk
 
     while line = f.gets
       if line.match(/(?<=VALUES |^)\((.*)\)(?=[,;])/)
         yield $1.split(',').take(3).map { |e| e.match(/(?<=^['"]).*(?=['"]$)/) ? $& : e.to_i }
 
-        num_processed += 1
-        last_num_processed += 1
+        n += 1
+        d += 1
 
-        if (Time.now - last) > update_proc_limit
+        now = Time.now
+        if (now - last) >= update_proc_limit
+          update_proc.call n, (now - start), d, (now - last)
           last = Time.now
-          update_proc.call num_processed, last_num_processed, (last - start)
-          last_num_processed = 0
+          d = 0
         end
       end
     end

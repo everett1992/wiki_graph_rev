@@ -15,7 +15,7 @@ class Wiki < ActiveRecord::Base
     dump = Dump.new(self.title, 'page')
     dump.each_record!(update_proc 'pages') do |page_ident, namespace, title, attributesattributes|
       if namespace == 0
-        self.pages.create( wiki: self, title: title, page_ident: page_ident)
+        self.pages.create(title: title, page_ident: page_ident)
       end
     end
     puts
@@ -47,8 +47,8 @@ class Wiki < ActiveRecord::Base
   private
 
   def update_proc(name)
-    Proc.new do |n, d, run_time|
-      print "Created #{n} #{name} in %.2f seconds. %.2f r/s             \r" % [run_time, d / run_time]
+    Proc.new do |t, t_time, d, d_time|
+      print "\rCreated %i #{name} in %.2f seconds. %.2f r/s\033[K" % [t, t_time, d / d_time.to_f]
     end
   end
 end
