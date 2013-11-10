@@ -5,5 +5,5 @@ class Link < ActiveRecord::Base
   validates_presence_of :to
   validates_presence_of :from
 
-  validates_uniqueness_of :to, scope: :from
+  #validates_uniqueness_of :to, scope: :from
 end

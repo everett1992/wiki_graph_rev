@@ -32,20 +32,23 @@ class Dump
 
     f = File.open(@filename)
 
-    start = Time.now
-    last = start
-    update_proc_limit = 2 # call update proc every two seconds
-    num_processed = 0
+    start = Time.now       # When processing was started
+    last = start           # Last time time update was run
+    update_proc_limit = 5  # How long a time chunk is
+    num_processed = 0      # Total number of rows added
+    last_num_processed = 0 # Number of rows added in this time chunk
 
     while line = f.gets
-      if line.match(/(?<=VALUES |^)\((.*\))[,;]/)
-        yield $1.split(',').map { |e| e.match(/^['"].*['"]$/) ?  e[1..-2] : e.to_f }
+      if line.match(/(?<=VALUES |^)\((.*)\)(?=[,;])/)
+        yield $1.split(',').take(3).map { |e| e.match(/(?<=^['"]).*(?=['"]$)/) ? $& : e.to_i }
+
         num_processed += 1
-        line = f.gets.chomp
+        last_num_processed += 1
 
         if (Time.now - last) > update_proc_limit
           last = Time.now
-          update_proc.call num_processed, (last - start)
+          update_proc.call num_processed, last_num_processed, (last - start)
+          last_num_processed = 0
         end
       end
     end

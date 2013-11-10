@@ -10,10 +10,10 @@ class Page < ActiveRecord::Base
   has_many :linked_pages, through: :links, source: :to
 
   validates_presence_of :title
-  validates_uniqueness_of :title, scope: :wiki
+  #validates_uniqueness_of :title, scope: :wiki
 
   validates_presence_of :page_ident
-  validates_uniqueness_of :page_ident, scope: :wiki
+  #validates_uniqueness_of :page_ident, scope: :wiki
 
   validates_presence_of :wiki
 

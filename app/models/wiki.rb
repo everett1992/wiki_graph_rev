@@ -14,21 +14,30 @@ class Wiki < ActiveRecord::Base
   def get_pages
     dump = Dump.new(self.title, 'page')
     dump.each_record!(update_proc 'pages') do |page_ident, namespace, title, attributesattributes|
-      self.pages.create( wiki: self, title: title, page_ident: page_ident, namespace: namespace )
+      if namespace == 0
+        self.pages.create( wiki: self, title: title, page_ident: page_ident)
+      end
     end
+    puts
+    puts "Created #{pages.count} page"
   end
 
   def get_page_links
     dump = Dump.new(self.title, 'pagelinks')
     dump.each_record!(update_proc 'page links') do |from_id, namespace, to_title|
+      if namespace == 0
 
-      from = Page.where(:page_ident => from_id, wiki: self).first
-      to = Page.where(:title => to_title, wiki: self).first
+        from = Page.where(:page_ident => from_id, wiki: self).first
+        to = Page.where(:title => to_title, wiki: self).first
 
-      unless to.nil? || from.nil?
-        Link.create(from: from, to: to)
+        unless to.nil? || from.nil?
+          Link.create(from: from, to: to)
+        end
       end
     end
+
+    puts
+    puts "Created #{links.count} page links"
   end
 
   def short_title
@@ -38,8 +47,8 @@ class Wiki < ActiveRecord::Base
   private
 
   def update_proc(name)
-    Proc.new do |n, run_time|
-      print "Created #{n} #{name} in %.2f seconds. %.2f r/s             \r" % [run_time, n / run_time]
+    Proc.new do |n, d, run_time|
+      print "Created #{n} #{name} in %.2f seconds. %.2f r/s             \r" % [run_time, d / run_time]
     end
   end
 end
