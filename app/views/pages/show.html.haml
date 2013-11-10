@@ -34,11 +34,6 @@
         Delay
       %input{name: :interval, type: :range, value: 1000, max: 1000, min: 1, step: 1}
 
-      %br
-
-      = button_to_function "Add Random", "window.graph.add_random()"
-      %input{name: :auto_add, type: :checkbox, value: "on", default: :false}
-
   .span9
     #show_page
 
@@ -49,7 +44,6 @@
   :javascript
     $(function() {
       window.wiki = '#{@wiki.title}'
-      window.page_ids = #{@ids}
       root_node = '#{@page.id}'
       window.init(root_node)
       window.update()

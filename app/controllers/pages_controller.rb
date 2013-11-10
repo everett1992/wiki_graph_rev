@@ -6,7 +6,6 @@ class PagesController < ApplicationController
   # GET /pages/1
   # GET /pages/1.json
   def show
-    @ids = @wiki.pages.pluck(:id)
   end
 
   def info

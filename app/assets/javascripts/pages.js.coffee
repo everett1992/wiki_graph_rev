@@ -23,21 +23,11 @@ $ ->
     setTimeout(window.update, interval)
 
   window.Graph = (element, root)->
-    @ids = window.page_ids
     @gen = 0
     @g3 = jsnx.Graph()
     @queue = []
 
-    @add_random = ->
-      if @ids.length > 0
-        rand_id = Math.floor(Math.random() * @ids.length)
-        page_id = @ids[rand_id]
-
-        @add page_id
-        @g3.add_nodes_from [page_id]
-
-    @add = (page_id) ->
-      @ids.splice(@ids.indexOf(String(page_id)), 1)
+    @enqueue_page = (page_id) ->
       @queue.push page_id
 
     @link_pages = (links) ->
@@ -46,10 +36,8 @@ $ ->
 
       for link in links
         if @g3.nodes().indexOf(String(link.to_id)) == -1
-          @add link.to_id
+          @enqueue_page link.to_id
           nodes.push link.to_id
-        else
-          console.log "exits"
 
         edges.push [link.from_id, link.to_id]
 
@@ -59,7 +47,6 @@ $ ->
         @g3.add_edges_from edges
 
       d3.selectAll('g.node').on 'click', (d, e) ->
-        console.log d
         show_page d.node
 
     @next = =>
@@ -67,15 +54,12 @@ $ ->
       prev = @queue
       @queue = []
 
-      if  $('input[name=auto_add]:checked').val() == "on" && prev.length == 0
-        @add_random()
-
       for page_id in prev
         $.getJSON "/links/from/#{page_id}", (links) =>
           @link_pages(links)
 
     # Add root node
-    @add root
+    @enqueue_page root
     @g3.add_nodes_from [root]
 
     color = d3.scale.category20()
