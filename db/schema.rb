@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131104193704) do
+ActiveRecord::Schema.define(version: 20131110015807) do
 
   create_table "links", force: true do |t|
     t.integer "to_id"
@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 20131104193704) do
   create_table "pages", force: true do |t|
     t.string  "title"
     t.integer "page_ident"
-    t.integer "namespace"
     t.integer "wiki_id"
   end
 
