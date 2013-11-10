@@ -10,14 +10,14 @@ $ ->
   window.init = (root_node)->
     window.root_node ||= root_node
     window.graph = new Graph('#graph', window.root_node)
-    window.graph.next()
+    window.graph.add_next()
 
 
   window.update = ->
     enabled = $('input[name=auto]:checked').val() == "on"
 
     if enabled
-      window.graph.next()
+      window.graph.add_next()
 
     interval = $('input[name=interval]').val()
     setTimeout(window.update, interval)
@@ -49,18 +49,15 @@ $ ->
       d3.selectAll('g.node').on 'click', (d, e) ->
         show_page d.node
 
-    @next = =>
+    @add_next = =>
       @gen += 1
       prev = @queue
       @queue = []
 
       for page_id in prev
         $.getJSON "/links/from/#{page_id}", (links) =>
+          console.log links
           @link_pages(links)
-
-    # Add root node
-    @enqueue_page root
-    @g3.add_nodes_from [root]
 
     color = d3.scale.category20()
     jsnx.draw(@g3,
@@ -79,3 +76,6 @@ $ ->
     , true)
     this
 
+    # Add root node
+    @enqueue_page root
+    @g3.add_nodes_from [root]
