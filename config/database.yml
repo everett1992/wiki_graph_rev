@@ -7,7 +7,7 @@ development:
   adapter: mysql2
   encoding: utf8
   database: wiki
-  pool: 10
+  pool: 15
   username: root
   password: im1coolguy
 
