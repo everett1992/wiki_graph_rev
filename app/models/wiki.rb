@@ -1,6 +1,6 @@
 
 class Wiki < ActiveRecord::Base
-  has_many :pages
+  has_many :pages, dependent: :destroy
 
   has_many :links, through: :pages
 
