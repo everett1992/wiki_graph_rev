@@ -10,10 +10,6 @@
  *
  *= require_self
  *= require_tree .
- *= require twitter/bootstrap
+ *= require bootstrap_and_overrides
  *= require bootstrap-typeahead-rails
  */
-
-body {
-  padding: 0 60px;
-}

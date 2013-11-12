@@ -1,4 +1,4 @@
-.span3
+.span3.sidebar
   %p#notice= notice
 
   - if @page
@@ -34,13 +34,14 @@
         Delay
       %input{name: :interval, type: :range, value: 1000, max: 1000, min: 1, step: 1}
 
-  .span9
-    #show_page
+  #show_page
 
-    #show_page
+.span9.graph-area
 
-    #graph
+  #graph
 
+
+- if @page
   :javascript
     $(function() {
       window.wiki = '#{@wiki.title}'
