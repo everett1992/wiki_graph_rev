@@ -1,5 +1,6 @@
 class Page < ActiveRecord::Base
   belongs_to :wiki
+  belongs_to :connected_component
 
   # Links and pages that lead to this page.
   has_many :backlinks, foreign_key: 'to_id', class_name: :Link, dependent: :destroy
@@ -27,5 +28,21 @@ class Page < ActiveRecord::Base
 
   def create_link_to(page)
     self.links.create(to: page)
+  end
+
+  def connected
+    pages = []
+    stack = [] # stack for dfs
+    stack << self
+
+    while page = stack.pop
+      # Add the page to the set of connected pages
+      pages << page
+
+      # Stack linked pages that are not already in the set
+      stack.concat page.linked_pages.reject { |c| pages.include? c }
+    end
+
+    return pages
   end
 end

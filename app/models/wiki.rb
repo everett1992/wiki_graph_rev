@@ -4,6 +4,8 @@ class Wiki < ActiveRecord::Base
 
   has_many :links, through: :pages
 
+  has_many :connected_components, dependent: :destroy
+
   validates_uniqueness_of :title
   validates_presence_of :title
 
@@ -51,6 +53,14 @@ class Wiki < ActiveRecord::Base
       page = pages.find(:first, offset: rand(c))
     end while page.links.count <= min_links
     return page
+  end
+
+  def find_connected_components
+    while page = pages.where(connected_component_id: nil).first
+      cc = self.connected_components.new
+      cc.pages = page.connected
+      cc.save
+    end
   end
 
   private
