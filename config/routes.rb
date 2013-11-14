@@ -1,6 +1,6 @@
 WikiGraphMysql::Application.routes.draw do
 
-  resources :wikis, path: '' do
+  resources :wikis do
     member do
       get 'titles'
       get 'random_page'
@@ -18,6 +18,8 @@ WikiGraphMysql::Application.routes.draw do
     post 'from', action: :from
   end
 
+  get '/search' => 'search#search'
+  post '/search' => 'search#search'
   root 'wikis#index'
 
   # The priority is based upon order of creation: first created -> highest priority.

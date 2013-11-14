@@ -2,7 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.graph-controls {
+  .control-label {
+    width: 60px;
+  }
+  .controls {
+    margin-left: 80px;
+  }
+}
+
 .graph-area {
-  background: green;
+  background: gray;
   height: 100%;
 }

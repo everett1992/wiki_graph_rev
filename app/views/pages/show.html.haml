@@ -1,4 +1,4 @@
-.span3.sidebar
+.span12
   %p#notice= notice
 
   - if @page
@@ -6,47 +6,44 @@
   -else
     %h3 Page not found
 
-  = link_to :random, random_page_wiki_path(@wiki), links: true
-  %input#page_title.typeahead{placeholder: 'Find Page'}
-  %button#goto_page
-    Go
+  .row-fluid
+    .span3.sidebar
+      - if @page
+        .form-horizontal.graph-controls
+          .control-group
+            .control-label
+            .controls
+              %button.btn#reset Reset Graph
 
-  - if @page
-    %p
-      %label{name: :auto}
-        Reset
-      = button_to_function :reset, 'window.init()'
+          .control-group
+            .control-label
+              %label.radio
+                %input{name: :auto, type: :radio, value: "", checked: :checked}
+                  Manual
+            .controls
+              %button.btn#add-next Add Next
 
-      %br
+          .control-group
+            .control-label
+              %label.radio
+                %input{name: :auto, type: :radio, value: "on"}
+                  Auto
+            .controls
+              %input{name: :interval, type: :range, value: 1000, max: 1000, min: 1, step: 1}
 
-      %label{name: :auto}
-        Manual
-      %input{name: :auto, type: :radio, value: "", checked: :checked}
-      = button_to_function :step, 'graph.add_next()'
+      #show_page
 
-      %br
+    .span9.graph-area
 
-      %label{name: :auto}
-        Auto
-      %input{name: :auto, type: :radio, value: "on"}
-
-      %label{name: :interval}
-        Delay
-      %input{name: :interval, type: :range, value: 1000, max: 1000, min: 1, step: 1}
-
-  #show_page
-
-.span9.graph-area
-
-  #graph
+      #graph
 
 
-- if @page
-  :javascript
-    $(function() {
-      window.wiki = '#{@wiki.title}'
-      root_node = '#{@page.id}'
-      window.init(root_node)
-      window.update()
-      window.show_page(root_node)
-    })
+    - if @page
+      :javascript
+        $(function() {
+          window.wiki = '#{@wiki.title}'
+          root_node = '#{@page.id}'
+          window.init(root_node)
+          window.update()
+          window.show_page(root_node)
+        })

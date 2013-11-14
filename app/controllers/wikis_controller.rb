@@ -75,16 +75,6 @@ class WikisController < ApplicationController
     end
   end
 
-  # Redirect to a random page, ensuring it has at least one link
-  def random_page
-    c = @wiki.pages.count
-    begin
-      @page = @wiki.pages.find(:first, offset: rand(c))
-    end while @page.links.count < 1
-
-    redirect_to [@wiki, @page]
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_wiki

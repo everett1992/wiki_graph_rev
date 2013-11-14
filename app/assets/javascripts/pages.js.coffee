@@ -3,6 +3,13 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
+  #:: Bind keys
+  $('#reset').on 'click', ->
+    window.init()
+
+  $('#add-next').on 'click', ->
+    graph.add_next()
+
   window.show_page = (page_id) ->
     $.getJSON "/pages/#{page_id}/info", (page) =>
       $('#show_page').html(HandlebarsTemplates['show_page'](page))

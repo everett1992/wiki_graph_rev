@@ -44,6 +44,15 @@ class Wiki < ActiveRecord::Base
     return title.match(/.*(?=wiki)/).to_s
   end
 
+  # Returns a page with at leasat min_links links
+  def random_page(min_links=0)
+    c = pages.count
+    begin
+      page = pages.find(:first, offset: rand(c))
+    end while page.links.count <= min_links
+    return page
+  end
+
   private
 
   def update_proc(name)
