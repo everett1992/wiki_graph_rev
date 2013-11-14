@@ -15,7 +15,7 @@ WikiGraphMysql::Application.routes.draw do
   end
 
   namespace :links do
-    get 'from/:from_id', action: :from
+    post 'from', action: :from
   end
 
   root 'wikis#index'

@@ -21,14 +21,14 @@
 
       %label{name: :auto}
         Manual
-      %input{name: :auto, type: :radio, value: ""}
-      = button_to_function :step, 'graph.next()'
+      %input{name: :auto, type: :radio, value: "", checked: :checked}
+      = button_to_function :step, 'graph.add_next()'
 
       %br
 
       %label{name: :auto}
         Auto
-      %input{name: :auto, type: :radio, value: "on", checked: :checked}
+      %input{name: :auto, type: :radio, value: "on"}
 
       %label{name: :interval}
         Delay

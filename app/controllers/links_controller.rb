@@ -1,7 +1,10 @@
 class LinksController < ApplicationController
   def from
-    from_id = params[:from_id]
-    @links = Link.where(from_id: from_id)
+    from_ids = ActiveSupport::JSON.decode(params[:pages])
+    puts "--------------------------------------------------------------------------------"
+    p from_ids
+    puts "--------------------------------------------------------------------------------"
+    @links = Link.where(from_id: from_ids)
 
     respond_to do |format|
       format.html

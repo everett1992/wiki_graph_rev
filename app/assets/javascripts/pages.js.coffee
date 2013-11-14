@@ -8,6 +8,7 @@ $ ->
       $('#show_page').html(HandlebarsTemplates['show_page'](page))
 
   window.init = (root_node)->
+    root_node = parseInt(root_node, 10)
     window.root_node ||= root_node
     window.graph = new Graph('#graph', window.root_node)
     window.graph.add_next()
@@ -27,18 +28,19 @@ $ ->
     @g3 = jsnx.Graph()
     @queue = []
 
-    @enqueue_page = (page_id) ->
-      @queue.push page_id
-
+    # TODO: some pages are added to the graph, but are not linked to anything, WTF?
     @link_pages = (links) ->
       nodes = []
       edges = []
 
       for link in links
-        if @g3.nodes().indexOf(String(link.to_id)) == -1
-          @enqueue_page link.to_id
+        # Add and enqueue nodes if they don't exist
+        if !@g3.node[link.to_id]
+          @queue.push link.to_id
           nodes.push link.to_id
 
+
+        # Add edges
         edges.push [link.from_id, link.to_id]
 
       if nodes.length > 0
@@ -54,10 +56,16 @@ $ ->
       prev = @queue
       @queue = []
 
-      for page_id in prev
-        $.getJSON "/links/from/#{page_id}", (links) =>
-          console.log links
-          @link_pages(links)
+      if prev.length > 0
+        $.ajax
+          type: "POST"
+          dataType: "json",
+          traditional: true
+          url: "/links/from",
+          data:
+            pages: JSON.stringify prev
+          success: (links) =>
+            @link_pages(links)
 
     color = d3.scale.category20()
     jsnx.draw(@g3,
@@ -77,5 +85,5 @@ $ ->
     this
 
     # Add root node
-    @enqueue_page root
-    @g3.add_nodes_from [root]
+    @queue.push parseInt root, 10
+    @g3.add_node root
