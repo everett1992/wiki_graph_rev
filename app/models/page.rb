@@ -30,19 +30,17 @@ class Page < ActiveRecord::Base
     self.links.create(to: page)
   end
 
+  # Returns a collection of all pages connected to this page.
   def connected
-    pages = []
-    stack = [] # stack for dfs
-    stack << self
+    # Bredth first search
+    page_ids = []
+    next_page_ids = [self.id]
 
-    while page = stack.pop
-      # Add the page to the set of connected pages
-      pages << page
-
-      # Stack linked pages that are not already in the set
-      stack.concat page.linked_pages.reject { |c| pages.include? c }
+    while not next_page_ids.empty?
+      page_ids.concat next_page_ids
+      next_page_ids = Link.where(from_id: next_page_ids).pluck(:to_id).uniq.delete_if { |page_id| page_ids.include? page_id }
     end
 
-    return pages
+    Page.where id: page_ids
   end
 end
