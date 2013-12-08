@@ -2,13 +2,6 @@
 
 %h3= @wiki.title
 %p #{@wiki.pages.count} pages
-
-%input#page_title.typeahead{placeholder: 'Find Page'}
-%button#goto_page
-  Go
-
-= link_to :random, random_page_wiki_path
-
 %p
   = link_to 'Back', wikis_path
 
