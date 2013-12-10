@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131110015807) do
+ActiveRecord::Schema.define(version: 20131210170805) do
+
+  create_table "connected_components", force: true do |t|
+    t.integer "wiki_id"
+  end
 
   create_table "links", force: true do |t|
     t.integer "to_id"
@@ -25,7 +29,10 @@ ActiveRecord::Schema.define(version: 20131110015807) do
     t.string  "title"
     t.integer "page_ident"
     t.integer "wiki_id"
+    t.integer "connected_component_id"
   end
+
+  add_index "pages", ["connected_component_id"], name: "index_pages_on_connected_component_id", using: :btree
 
   create_table "wikis", force: true do |t|
     t.string "title"

@@ -14,6 +14,9 @@ WikiGraphMysql::Application.routes.draw do
     end
   end
 
+  resources :connected_components, only: [:show] do
+  end
+
   namespace :links do
     post 'from', action: :from
   end

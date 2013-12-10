@@ -1,6 +1,6 @@
-
 class Wiki < ActiveRecord::Base
   has_many :pages, dependent: :destroy
+  has_many :connected_components, dependent: :destroy
 
   has_many :links, through: :pages
 
@@ -55,19 +55,6 @@ class Wiki < ActiveRecord::Base
       cc.pages = page.connected
       cc.save
     end
-  end
-
-  def connected_components
-    vertexes = self.pages.pluck(:id)
-    # I tried building in memory adjacancy matrixes, but exceded 8G memory.
-    # TODO: Look into adjacancy matrix again (build in mysql?)
-    # Returns an array of pages that link to the passed page
-    adj_proc = Proc.new { |page_id| Link.where(from_id: page_id).pluck(:to_id) }
-    # Returns an array of pages that link to the passed page (used for reverse graph)
-    rev_adj_proc = Proc.new { |page_id| Link.where(to_id: page_id).pluck(:from_id) }
-
-    cc = ConnectedComponents.new(vertexes, adj_proc, rev_adj_proc)
-    return cc
   end
 
   private
