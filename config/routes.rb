@@ -11,6 +11,7 @@ WikiGraphMysql::Application.routes.draw do
   resources :pages, only: [] do
     member do
       get 'info'
+      get 'connected_component'
     end
   end
 

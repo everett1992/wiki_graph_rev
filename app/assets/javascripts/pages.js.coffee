@@ -7,72 +7,17 @@ $ ->
   $('#reset').on 'click', ->
     window.init()
 
-  $('#add-next').on 'click', ->
-    graph.add_next()
-
   window.show_page = (page_id) ->
     $.getJSON "/pages/#{page_id}/info", (page) =>
       $('#show_page').html(HandlebarsTemplates['show_page'](page))
 
-  window.init = (root_node)->
+  window.init = (root_node) ->
     root_node = parseInt(root_node, 10)
     window.root_node ||= root_node
     window.graph = new Graph('#graph', window.root_node)
-    window.graph.add_next()
-
-
-  window.update = ->
-    enabled = $('input[name=auto]:checked').val() == "on"
-
-    if enabled
-      window.graph.add_next()
-
-    interval = $('input[name=interval]').val()
-    setTimeout(window.update, interval)
 
   window.Graph = (element, root)->
-    @gen = 0
     @g3 = jsnx.Graph()
-    @queue = []
-
-    # TODO: some pages are added to the graph, but are not linked to anything, WTF?
-    @link_pages = (links) ->
-      nodes = []
-      edges = []
-
-      for link in links
-        # Add and enqueue nodes if they don't exist
-        if !@g3.node[link.to_id]
-          @queue.push link.to_id
-          nodes.push link.to_id
-
-
-        # Add edges
-        edges.push [link.from_id, link.to_id]
-
-      if nodes.length > 0
-        @g3.add_nodes_from nodes, group: @gen
-      if edges.length > 0
-        @g3.add_edges_from edges
-
-      d3.selectAll('g.node').on 'click', (d, e) ->
-        show_page d.node
-
-    @add_next = =>
-      @gen += 1
-      prev = @queue
-      @queue = []
-
-      if prev.length > 0
-        $.ajax
-          type: "POST"
-          dataType: "json",
-          traditional: true
-          url: "/links/from",
-          data:
-            pages: JSON.stringify prev
-          success: (links) =>
-            @link_pages(links)
 
     color = d3.scale.category20()
     jsnx.draw(@g3,
@@ -90,7 +35,17 @@ $ ->
         stroke: '#999'
     , true)
     this
+    $.getJSON "/pages/#{root}/connected_component", (data) =>
+      console.log data
+      pages = []
+      links = []
 
-    # Add root node
-    @queue.push parseInt root, 10
-    @g3.add_node root
+      for page in data.pages
+        pages.push page.id
+
+      for link in data.links
+        links.push [link.from_id, link.to_id]
+
+      @g3.add_nodes_from pages
+      @g3.add_edges_from links
+

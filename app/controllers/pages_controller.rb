@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
   before_action :set_wiki, only: [:show]
-  before_action :set_page, only: [:show]
+  before_action :set_page, only: [:show, :connected_component, :info]
 
   respond_to :json, :html
   # GET /pages/1
@@ -9,16 +9,19 @@ class PagesController < ApplicationController
   end
 
   def info
-    @page = Page.find_by_id(params[:id])
+  end
+
+  def connected_component
+    @cc =  @page.connected_component
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_page
       if @wiki
-        @page = @wiki.pages.find_by_title(params[:id])
+        @page = @wiki.pages.find(params[:id])
       else
-        @page = Page.find_by_title(params[:id])
+        @page = Page.find(params[:id])
       end
     end
 

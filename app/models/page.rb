@@ -18,10 +18,6 @@ class Page < ActiveRecord::Base
 
   validates_presence_of :wiki
 
-  def to_param
-    self.title
-  end
-
   def wiki_url
     return "https://#{wiki.short_title}.wikipedia.org/wiki/#{title}"
   end
