@@ -1,12 +1,19 @@
 class ConnectedComponent < ActiveRecord::Base
   has_many :pages
+  has_many :links
   belongs_to :wiki
 
-  # Return the set of links connecting pages of this component
-  def links
-    Link.interior_links pages
+  def graph
+    g = GraphViz.new :G, type: :digraph
+    nodes = Hash.new
+
+    self.pages.find_each { |page| nodes[page.id] = g.add_nodes page.title }
+    self.links.find_each { |link| g.add_edges nodes[link.from_id], nodes[link.to_id] }
+
+    return g
   end
 
+  # This might not be a model method, it is only called once, after loading wiki data (isn't actually called right now)
   def self.generate pages
     vertexes = pages.pluck :id
 
