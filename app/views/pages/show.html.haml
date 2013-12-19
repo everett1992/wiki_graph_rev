@@ -8,29 +8,6 @@
 
   .row-fluid
     .span3.sidebar
-      - if @page
-        .form-horizontal.graph-controls
-          .control-group
-            .control-label
-            .controls
-              %button.btn#reset Reset Graph
-
-          .control-group
-            .control-label
-              %label.radio
-                %input{name: :auto, type: :radio, value: "", checked: :checked}
-                  Manual
-            .controls
-              %button.btn#add-next Add Next
-
-          .control-group
-            .control-label
-              %label.radio
-                %input{name: :auto, type: :radio, value: "on"}
-                  Auto
-            .controls
-              %input{name: :interval, type: :range, value: 1000, max: 1000, min: 1, step: 1}
-
       #show_page
 
     .span9.graph-area
